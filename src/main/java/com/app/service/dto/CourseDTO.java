@@ -11,7 +11,12 @@ import java.util.Objects;
  */
 public class CourseDTO implements Serializable {
 
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private Long id;
 
     private String code;
 
@@ -20,6 +25,7 @@ public class CourseDTO implements Serializable {
     private String observations;
     
     private Set<StudentDTO> students = new HashSet<>();
+    
 
     public Long getId() {
         return id;
@@ -53,8 +59,9 @@ public class CourseDTO implements Serializable {
         this.observations = observations;
     }
     
+    
 
-    public Set<StudentDTO> getStudents() {
+	public Set<StudentDTO> getStudents() {
 		return students;
 	}
 

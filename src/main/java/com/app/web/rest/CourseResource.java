@@ -1,19 +1,10 @@
 package com.app.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.app.domain.Course;
-import com.app.domain.Student;
-import com.app.repository.CourseRepository;
-import com.app.repository.StudentRepository;
-import com.app.web.rest.util.HeaderUtil;
-import com.app.web.rest.util.PaginationUtil;
-import com.app.service.dto.CourseDTO;
-import com.app.service.dto.StudentDTO;
-import com.app.service.mapper.CourseMapper;
-import com.app.service.mapper.StudentMapper;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
 
-import io.swagger.annotations.ApiParam;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,14 +12,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.app.domain.Course;
+import com.app.repository.CourseRepository;
+import com.app.service.dto.CourseDTO;
+import com.app.service.mapper.CourseMapper;
+import com.app.web.rest.util.HeaderUtil;
+import com.app.web.rest.util.PaginationUtil;
+import com.codahale.metrics.annotation.Timed;
+
+import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 
 /**
  * REST controller for managing Course.
@@ -43,17 +45,12 @@ public class CourseResource {
 
     private final CourseRepository courseRepository;
     
-    private final StudentRepository studentRepository;
-
     private final CourseMapper courseMapper;
     
-    private final StudentMapper studentMapper;
 
-    public CourseResource(CourseRepository courseRepository, CourseMapper courseMapper, StudentRepository studentRepository, StudentMapper studentMapper) {
+    public CourseResource(CourseRepository courseRepository, CourseMapper courseMapper) {
         this.courseRepository = courseRepository;
         this.courseMapper = courseMapper;
-        this.studentRepository= studentRepository;
-        this.studentMapper = studentMapper;
     }
 
     /**
@@ -128,9 +125,9 @@ public class CourseResource {
     public ResponseEntity<Course> getCourse(@PathVariable Long id) {
         log.debug("REST request to get Course : {}", id);
         Course course = courseRepository.findOneWithEagerRelationships(id);
-        log.debug("++++++++++++++++++ CURSO:"+course.getName()+" estudiantes "+course.getStudents());
         CourseDTO courseDTO = courseMapper.toDto(course);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(course));
+//        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(courseDTO));
     }
 
     /**
@@ -147,21 +144,4 @@ public class CourseResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
     
-    @PostMapping("/courses/student/{id}")
-    @Timed
-    public ResponseEntity<CourseDTO> addStudentToCourse(@RequestBody CourseDTO courseDTO, @PathVariable Long id){
-    	log.debug("REST request to add Student : {}", id," to course ", courseDTO.getId());
-    	Course course = courseMapper.toEntity(courseDTO);
-    	Student student = studentRepository.findOne(id);
-    	StudentDTO studentDto = studentMapper.toDto(student);
-    	course = courseRepository.save(course);
-        CourseDTO result = courseMapper.toDto(course);
-        Set<StudentDTO> students = new HashSet<StudentDTO>();
-        students = result.getStudents();
-        students.add(studentDto);
-        result.setStudents(students);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
-    }
 }

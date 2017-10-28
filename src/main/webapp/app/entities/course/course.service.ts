@@ -47,13 +47,6 @@ export class CourseService {
         return new ResponseWrapper(res.headers, jsonResponse, res.status);
     }
 
-    addStudentToCourse(course: Course, student_id: number): Observable<Course> {
-     const copy = this.convert(course);
-     return this.http.post(`${this.resourceUrl}/student/${student_id}`, copy).map((res: Response) => {
-            return res.json();
-        });
-    }
-
     private convert(course: Course): Course {
         const copy: Course = Object.assign({}, course);
         return copy;

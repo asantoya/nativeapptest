@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Course and its DTO CourseDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {StudentMapper.class, })
 public interface CourseMapper extends EntityMapper <CourseDTO, Course> {
     
     @Mapping(target = "students", ignore = true)

@@ -44,13 +44,6 @@ export class StudentCourseDialogComponent implements OnInit {
         );
     }
 
-  addStudent() {
-    this.routeSub = this.route.params.subscribe((params) => {
-      this.courseService.addStudentToCourse(this.course, params['student_id']);
-    });
-
-  }
-
   ngOnInit() {
         console.log('curso actual ' + this.course.id);
         this.loadAll();
