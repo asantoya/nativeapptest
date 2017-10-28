@@ -1,0 +1,36 @@
+entity Course {
+	code String,
+    name String,
+    observations String
+}
+
+/**
+ * The Student entity.
+ */
+entity Student {
+	firstName String,
+	lastName String,
+	identification String,
+    gender Gender
+}
+
+entity Teacher {
+	firstName String,
+	lastName String,
+	identification String,
+    gender Gender
+}
+
+enum Gender {
+    MALE, FEMALE
+}
+
+
+relationship ManyToMany {
+	Student{course(name)} to Course{student},
+    Teacher{course(name)} to Course{teacher}
+}
+
+paginate Course with infinite-scroll
+
+dto * with mapstruct

@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="display-4">Bienvenido!</h1>
+        <p class="lead">Esta app te permitira gestionar cada una de las funcionalidades de la escuela.</p>
+
+        <div [ngSwitch]="isAuthenticated()">
+            <div class="alert alert-success" *ngSwitchCase="true">
+                <span *ngIf="account"
+                   > Estas logueado como usuario "{{account.login}}". </span>
+			</div>
+			<div class="row" *ngSwitchCase="true">
+				<div class="col-md-4">
+					<div class="thumbnail">
+						<a routerLink="student" routerLinkActive="active"> 
+						<img src="../../content/images/student-icon.png" alt="Estudiantes" style="width: 200px">
+							<div class="caption">
+								<p>Estudiantes.</p>
+							</div>
+						</a>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="thumbnail">
+						<a routerLink="teacher" routerLinkActive="active"> 
+						<img src="../../content/images/teacher-icon.png" alt="Maestros" style="width: 200px">
+							<div class="caption">
+								<p>Maestros.</p>
+							</div>
+						</a>
+					</div>
+				</div>
+							<div class="col-md-4">
+					<div class="thumbnail">
+						<a routerLink="course" routerLinkActive="active"> 
+						<img src="../../content/images/course-icon.png" alt="Cursos" style="width: 200px">
+							<div class="caption">
+								<p>Cursos.</p>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+
+            <div class="alert alert-warning" *ngSwitchCase="false">
+                <span>Acceso </span>
+                <a class="alert-link" (click)="login()">Administrador</a><span>, Solo usuarios administradores tienen permitido ingresar.</span>
+            </div>
+        </div>
+    </div>
+</div>

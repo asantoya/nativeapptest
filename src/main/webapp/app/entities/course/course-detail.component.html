@@ -1,0 +1,48 @@
+
+<div *ngIf="course">
+    <h2><span>Curso </span> {{course.code}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Nombre</span></dt>
+        <dd>
+            <span>{{course.name}}</span>
+        </dd>
+        <dt><span>Observaciones</span></dt>
+        <dd>
+            <span>{{course.observations}}</span>
+        </dd>
+    </dl>
+    
+    <dl class="row-md jh-entity-details">
+        <dt><span>Estudiantes Inscitos</span></dt>
+        <dd>
+	        <div class="row">
+	       		<div class="col-md-12" *ngFor="let student of course.students">
+	       			<span >
+				        <a [routerLink]="['/student', student?.id ]">{{student.firstName}} {{student.lastName}}</a>
+				    </span>
+	        	</div>
+	        </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Volver</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'course/'+ course.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Editar</span>
+    </button>
+    
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: course.id + '/students'} }]"
+            class="btn btn-success">
+        <span class="fa fa-plus"></span>&nbsp;<span> Agregar estudiante</span>
+    </button>
+</div>
